@@ -43,7 +43,6 @@ while True:
 	elif keys[pygame.K_LEFT]:
 		bgx+=5
 
-
 	pygame.draw.rect(DISPLAYSURF, GREEN, (20, 10, 204, 20), 1)
 	pygame.draw.rect(DISPLAYSURF, GREEN, health)
 
