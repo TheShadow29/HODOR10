@@ -11,9 +11,8 @@ WHITE = (255, 255, 255)
 bgImg = pygame.image.load('city_2.png')
 print bgImg.get_rect().size
 size = bgImg.get_rect().size
-bgx = 10
-bgy = 10
-direction = 'right'
+bgx = 0
+bgy = 0
 while True:
 	DISPLAYSURF.fill(WHITE)
 	pygame.event.pump()
