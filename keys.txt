@@ -1,0 +1,6 @@
+arrow 			move
+space 			attack		
+x				stealth(gf) with time limit 
+c1234			alien change
+
+
