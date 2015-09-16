@@ -14,22 +14,20 @@ size = bgImg.get_rect().size
 bgx = 10
 bgy = 10
 direction = 'right'
-while True: # the main game loop
+while True:
+	DISPLAYSURF.fill(WHITE)
+	pygame.event.pump()
+	keys = pygame.key.get_pressed()
+	if keys[pygame.K_RIGHT]:
+		bgx-=5
+	elif keys[pygame.K_LEFT]:
+		bgx+=5
+	DISPLAYSURF.blit(bgImg, (bgx, bgy))
+	DISPLAYSURF.blit(bgImg, (bgx+size[0], bgy))
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
 			sys.exit()
-		elif event.type == KEYDOWN:
-			DISPLAYSURF.fill(WHITE)
-			if event.key == K_LEFT:
-				bgx += 50
-			elif event.key == K_UP:
-				bgy += 50
-			elif event.key == K_RIGHT:
-				bgx -= 50
-			elif event.key == K_DOWN:
-				bgy -= 50
-		DISPLAYSURF.blit(bgImg, (bgx, bgy))
-		DISPLAYSURF.blit(bgImg, (bgx+size[0], bgy))
+
 	pygame.display.update()
 	fpsClock.tick(FPS)
