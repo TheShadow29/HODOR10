@@ -1,7 +1,3 @@
-#Code by Umut Bilgic, Ankara, Turkey.
-#Public release: 11/16/2013
-#Release version: 1.1 Beta - Working coin and point system.
-
 from pygame.locals import *
 import pygame
 import sys
