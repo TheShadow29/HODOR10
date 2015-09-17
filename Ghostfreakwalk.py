@@ -52,28 +52,29 @@ while True:
 			pygame.quit()
 			sys.exit()			
 		if event.type == pygame.KEYDOWN:
-		    if event.key == pygame.K_LEFT:
-		    	if bgx == -(2135 + k*2135):
+		    if event.key == pygame.K_RIGHT:
+				if bgx == -(2135 + k*2135):
 					k+=1
-				else:
-					bgx_change = 5
-				direc = 0
-		    elif event.key == pygame.K_RIGHT:
-		        if bgx == 0:
-					pass
-				else : 
+				else :
 					bgx_change = -5
+				direc = 0	
+		    elif event.key == pygame.K_LEFT:
+				if bgx >= 0:
+					pass
+				else: 
+					bgx_change = 5
 				direc = 1 
 		    elif event.key == pygame.K_x:
-		    	print "X"
-		if event.type == pygame.KEYUP:
-		    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-		        bgx_change = 0
-		        if trans == 0 :
+				print "X"
+				if trans == 0 :
 					trans = 1
 				elif trans == 1 :
 					trans = 0
-
+		if event.type == pygame.KEYUP:
+			if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+				bgx_change = 0
+			
+	print bgx
 	bgx += bgx_change
 
 
