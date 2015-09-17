@@ -33,6 +33,7 @@ k = 0
 
 direc = 0
 trans = 0
+key = ""
 bgx_change = 0
 
 while True:
@@ -45,7 +46,6 @@ while True:
 
 	DISPLAYSURF.blit(bgImg, (bgx+(k-1)*size[0], bgy))
 	DISPLAYSURF.blit(bgImg, (bgx+k*size[0], bgy))
-	
 	pygame.event.pump()
 	for event in pygame.event.get():
 		if event.type == QUIT:
@@ -53,28 +53,18 @@ while True:
 			sys.exit()			
 		if event.type == pygame.KEYDOWN:
 		    if event.key == pygame.K_LEFT:
-		    	if bgx == -(2135 + k*2135):
-					k+=1
-				else:
-					bgx_change = 5
-				direc = 0
+		        bgx_change = 5
 		    elif event.key == pygame.K_RIGHT:
-		        if bgx == 0:
-					pass
-				else : 
-					bgx_change = -5
-				direc = 1 
+		        bgx_change = -5
 		    elif event.key == pygame.K_x:
 		    	print "X"
 		if event.type == pygame.KEYUP:
 		    if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
 		        bgx_change = 0
-		        if trans == 0 :
-					trans = 1
-				elif trans == 1 :
-					trans = 0
 
 	bgx += bgx_change
+
+
 
 
 	if trans == 0 :
@@ -86,11 +76,6 @@ while True:
 	pygame.draw.rect(DISPLAYSURF, GREEN, health)
 
 	DISPLAYSURF.blit(timeSurfaceObj, timeRectObj)
-	
-	for event in pygame.event.get():
-		if event.type == QUIT:
-			pygame.quit()
-			sys.exit()
 
 	pygame.display.update()
 	fpsClock.tick(FPS)
