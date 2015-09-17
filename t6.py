@@ -67,6 +67,7 @@ y=pygame_img.get_rect().bottom
 hb_count_move_right = 0
 hbs_count_attack_right = 0
 hb_count_move_left = 0
+hbs_count_attack_left=0
 direction='right'
 
 wm_count_move_right = 0
