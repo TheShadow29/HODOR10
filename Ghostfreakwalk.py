@@ -17,6 +17,7 @@ healthTot = 60
 healthRemaining = 100 - healthTot
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
+gfImgsprite = [pygame.image.load('Images/Ghostfreak/GhostfreakNormalright.png'), pygame.image.load('Images/Ghostfreak/GhostfreakNormalleft.png')] 
 
 time = pygame.time.get_ticks()
 fontObj = pygame.font.Font('freesansbold.ttf', 20)
@@ -25,8 +26,9 @@ timeRectObj = timeSurfaceObj.get_rect()
 timeRectObj.center = (400, 20)
 
 health = pygame.Rect(21, 12, healthTot*200/100, 16)
+k = 0
 
-k=0
+direc = 0
 
 while True:
 	
@@ -35,6 +37,7 @@ while True:
 	timeRectObj.center = (400, 20)
 
 	DISPLAYSURF.fill(WHITE)
+
 	DISPLAYSURF.blit(bgImg, (bgx+(k-1)*size[0], bgy))
 	DISPLAYSURF.blit(bgImg, (bgx+k*size[0], bgy))
 	
@@ -45,12 +48,15 @@ while True:
 			k+=1
 		else :
 			bgx-=5
+		direc = 0
 	elif keys[pygame.K_LEFT]:
 		if bgx == 0:
 			pass
 		else : 
 			bgx+=5
+		direc = 1 
 
+	DISPLAYSURF.blit(gfImgsprite[direc],(800/3, 30))
 	pygame.draw.rect(DISPLAYSURF, GREEN, (20, 10, 204, 20), 1)
 	pygame.draw.rect(DISPLAYSURF, GREEN, health)
 
