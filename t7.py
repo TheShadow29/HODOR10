@@ -45,9 +45,8 @@ wms = [sprites(i) for i in wmf]
 wms_to_t = wms[:3]
 wms_back_t=wms[9:11]
 wms_right_motion=wms[5:9]
-wms_left_motion=[pygame.transform.flip(w.image,True,False) for w in wms_right_motion]
 wms_right_roll=wms[3:6]
-wms_left_roll=[pygame.transform.flip(w.image,True,False) for h in wms_right_roll]
+
 
 
 alienchange=''
@@ -63,28 +62,19 @@ ben = [sprites('Images/sprites/ben_walk_right_FILES/0.png'),
        sprites('Images/sprites/ben_walk_right_FILES/7.png')]
 transform={'h':0, 'w':0}
 pygame_img = ben[0].image
-y=pygame_img.get_rect().bottom
 hb_count_move_right = 0
 hbs_count_attack_right = 0
 hb_count_move_left = 0
 direction='right'
 
 wm_count_move_right = 0
-wm_count_move_left =0
 wm_count_roll=0
-wm_count_roll_left=0
-
-def background():
-	time = pygame.time.get_ticks()
-	DISPLAYSURF.fill(WHITE)
-	timeSurfaceObj = fontObj.render(str(timeMax - (time/1000)), True, GREEN)
-	timeRectObj.center = (400, 20)
-	DISPLAYSURF.blit(bgImg, (bgx, bgy))
-	DISPLAYSURF.blit(bgImg, (bgx+size[0], bgy))
-	pygame.draw.rect(DISPLAYSURF, GREEN, (20, 10, 204, 20), 1)
-	pygame.draw.rect(DISPLAYSURF, GREEN, health)
 
 
+k=0
+bgx_change=0
+index1 = 0
+index2 = 0
 
 
 while True:
@@ -98,24 +88,27 @@ while True:
 	pygame.event.pump()
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_RIGHT]:
-		bgx-=5
+		if bgx == -(2135 + k*2135):
+			k+=1
+		else :
+			bgx_change = -5
 		direction='right'
-		if curr_alien=='h':
+		index1+=0.5
+        pygame_img = ben[int(index1)%4].image
+        if curr_alien=='h':
 			pygame_img=hbs_right_motion[hb_count_move_right%6].image
 			hb_count_move_right+=1
-		elif curr_alien=='w':
-			pygame_img=wms_right_motion[wm_count_move_right%4].image				
-			wm_count_move_right+=1
+			sleep(0.03)
 	elif keys[pygame.K_LEFT]:
-		bgx+=5
+		if bgx >= 0:
+			pass
+		else: 
+			bgx_change = 5
 		direction='left'
 		if curr_alien=='h':
 			pygame_img=hbs_left_motion[hb_count_move_left%6]
 			hb_count_move_left+=1
-		elif curr_alien=='w':
-			pygame_img=wms_left_motion[wm_count_move_left%4]
-			wm_count_move_left+=1
-
+			#sleep(0.03)
 	elif keys[pygame.K_h]:
 		alienchange='h'
 	elif keys[pygame.K_w]:
@@ -124,11 +117,11 @@ while True:
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='h' and direction=='right':
 			for hbs_count_attack_right in xrange(0,6):
-				pygame_img = hbs_attack_right[int(hbs_count_attack_right)].image
+				pygame_img = hbs_attack_right[hbs_count_attack_right].image
 				DISPLAYSURF.fill(WHITE)
-				DISPLAYSURF.blit(bgImg, (bgx, bgy))		
+				DISPLAYSURF.blit(bgImg, (bgx, bgy))	
+				sleep(0.03)	
 				DISPLAYSURF.blit(pygame_img,(330,500))
-				DISPLAYSURF.blit(bgImg, (bgx+size[0], bgy))
 				pygame.display.update()
 			
 		elif curr_alien=='h' and direction=='left':
@@ -136,31 +129,26 @@ while True:
 				pygame_img = hbs_attack_left[hbs_count_attack_left]
 				DISPLAYSURF.fill(WHITE)
 				DISPLAYSURF.blit(bgImg, (bgx, bgy))	
+				sleep(0.03)	
 				DISPLAYSURF.blit(pygame_img,(330,500))
+				pygame.display.update()
 
 		elif curr_alien=='w' and direction=='right':
 			for wms_count_roll_right in xrange(0,3):
 				pygame_img = wms_right_roll[wms_count_roll_right].image
+				DISPLAYSURF.fill(WHITE)
 				bgx-=5
 				bgx-=5
-				background()	
+				DISPLAYSURF.blit(bgImg, (bgx, bgy))	
+				sleep(0.03)	
 				DISPLAYSURF.blit(pygame_img,(330,500))
 				pygame.display.update()
 
-		elif curr_alien=='w' and direction=='left':
-			for wms_count_roll_left in xrange(0,3):
-				pygame_img = wms_left_roll[wms_count_roll_left]
-				bgx+=5
-				bgx+=5
-				background()	
-				DISPLAYSURF.blit(pygame_img,(330,500))
-				pygame.display.update()
-
+	bgx += bgx_change
 
 	if alienchange == 'h':
 		curr_alien = 'h'
 		pygame_img = hbs[transform[alienchange]].image
-		pygame_img.get_rect().bottom = y
 		transform[alienchange]+=1
 		if transform[alienchange]>3:
 			transform[alienchange]=0
@@ -189,11 +177,6 @@ while True:
 		if event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
 				bgx_change = 0
-			if curr_alien=='w' and direction=='right':
-				pygame_img=wms_right_motion[0].image
-			if curr_alien=='w' and direction=='left':
-				pygame_img=wms_left_motion[0]
-
 
 	pygame.display.update()
 	fpsClock.tick(FPS)

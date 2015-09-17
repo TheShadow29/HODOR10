@@ -74,7 +74,6 @@ while True:
 			if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
 				bgx_change = 0
 			
-	print bgx
 	bgx += bgx_change
 
 
