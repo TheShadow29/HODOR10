@@ -5,3 +5,14 @@ class sprites(pygame.sprite.Sprite):
 		pygame.sprite.Sprite.__init__(self)
 		self.image = pygame.image.load(name1)
 		self.rect = self.image.get_rect()
+
+
+
+
+
+
+
+
+
+
+

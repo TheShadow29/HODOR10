@@ -4,4 +4,4 @@ list = []
 for file in os.listdir("./Images/HeatBlast/"):
     if fnmatch.fnmatch(file, '*.png'):
         list.append(file)
-list = sorted(list)
+hblist = sorted(list)
