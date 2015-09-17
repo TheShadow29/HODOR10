@@ -40,6 +40,14 @@ hbs_attack_left =[pygame.transform.flip(h.image,True,False) for h in hbs_attack_
 hbs_attack_right.append(hbs[3])
 hbs_attack_left.append(pygame.transform.flip(hbs[3].image,True,False))
 
+wmf = ['./Images/Wildmutt/'+i for i in wmlist]
+wms = [sprites(i) for i in wmf]
+wms_to_t = wms[:3]
+wms_back_t=wms[9:11]
+wms_right_motion=wms[5:9]
+wms_right_roll=wms[3:6]
+
+
 
 alienchange=''
 curr_alien=''
@@ -52,12 +60,22 @@ ben = [sprites('Images/sprites/ben_walk_right_FILES/0.png'),
        sprites('Images/sprites/ben_walk_right_FILES/5.png'),
        sprites('Images/sprites/ben_walk_right_FILES/6.png'),
        sprites('Images/sprites/ben_walk_right_FILES/7.png')]
-transform={'h':0}
+transform={'h':0, 'w':0}
 pygame_img = ben[0].image
 hb_count_move_right = 0
 hbs_count_attack_right = 0
 hb_count_move_left = 0
 direction='right'
+
+wm_count_move_right = 0
+wm_count_roll=0
+
+
+
+
+
+
+
 while True:
 	
 	time = pygame.time.get_ticks()
@@ -75,15 +93,23 @@ while True:
 			pygame_img=hbs_right_motion[hb_count_move_right%6].image
 			hb_count_move_right+=1
 			sleep(0.03)
+		elif curr_alien=='w':
+			for wms_right_count in xrange(0,4):
+				pygame_img=wms_right_motion[wm_count_move_right%4].image
+			wm_count_move_right+=1
+			sleep(0.03)
 	elif keys[pygame.K_LEFT]:
 		bgx+=5
 		direction='left'
 		if curr_alien=='h':
 			pygame_img=hbs_left_motion[hb_count_move_left%6]
 			hb_count_move_left+=1
-			sleep(0.03)
-	elif keys[pygame.K_c]:
-		alienchange = 'h'
+			#sleep(0.03)
+	elif keys[pygame.K_h]:
+		alienchange='h'
+	elif keys[pygame.K_w]:
+		alienchange='w'
+
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='h' and direction=='right':
 			for hbs_count_attack_right in xrange(0,6):
@@ -103,7 +129,15 @@ while True:
 				DISPLAYSURF.blit(pygame_img,(330,500))
 				pygame.display.update()
 
-
+		elif curr_alien=='w' and direction=='right':
+			for wms_count_roll_right in xrange(0,3):
+				pygame_img = wms_right_roll[wms_count_roll_right].image
+				DISPLAYSURF.fill(WHITE)
+				bgx-=5
+				DISPLAYSURF.blit(bgImg, (bgx, bgy))	
+				sleep(0.03)	
+				DISPLAYSURF.blit(pygame_img,(330,500))
+				pygame.display.update()
 
 	if alienchange == 'h':
 		curr_alien = 'h'
@@ -112,6 +146,15 @@ while True:
 		if transform[alienchange]>3:
 			transform[alienchange]=0
 			alienchange=''
+
+	if alienchange == 'w':
+		curr_alien = 'w'
+		pygame_img = wms[transform[alienchange]].image
+		transform[alienchange]+=1
+		if transform[alienchange]>2:
+			transform[alienchange]=0
+			alienchange=''
+
 
 
 
