@@ -1,13 +1,23 @@
 import fnmatch
 import os
-list = []
-for file in os.listdir("./Images/HeatBlast/"):
-    if fnmatch.fnmatch(file, '*.png'):
-        list.append(file)
-hblist = sorted(list)
 
 list1=[]
-for file in os.listdir("./Images/Wildmutt/"):
-    if fnmatch.fnmatch(file, '*.png'):
-        list1.append(file)
+
+for files in os.listdir("./Images/HeatBlast/"):
+    if fnmatch.fnmatch(files, '*.png'):
+        list1.append(files)
+hblist = sorted(list1)
+
+list1 = []
+
+for files in os.listdir("./Images/Wildmutt/"):
+    if fnmatch.fnmatch(files, '*.png'):
+        list1.append(files)
 wmlist = sorted(list1)
+
+list1=[]
+
+for files in os.listdir("./Images/Ghostfreak/"):
+    if fnmatch.fnmatch(files, '*.png'):
+        list1.append(files)
+gflist = sorted(list1)
