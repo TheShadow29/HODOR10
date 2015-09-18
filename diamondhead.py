@@ -32,9 +32,8 @@ diamondhead=[sprites('Images/Diamondhead/diamondhead_transform_left.png'),      
              sprites('Images/Diamondhead/diamondhead_attack_left1.png'),            #7
              sprites('Images/Diamondhead/diamondhead_attack_left2.png'),            #8
              sprites('Images/Diamondhead/diamondhead_attack_left3.png'),            #9
-             sprites('Images/Diamondhead/diamondhead_attack_left4.png'),            #10
-             sprites('Images/Diamondhead/diamondhead_deform_left1.png'),            #11
-             sprites('Images/Diamondhead/diamondhead_deform_left2.png'),            #12
+             sprites('Images/Diamondhead/diamondhead_deform_left1.png'),            #10
+             sprites('Images/Diamondhead/diamondhead_deform_left2.png'),            #11
              ]
 
 ben = [sprites('Images/sprites/ben_walk_right_FILES/0.png'), 
@@ -70,7 +69,7 @@ while True:
         index1+=1
         pygame_img = pygame.transform.flip(diamondhead[3+index1%4].image,True,False) 
         flag=0
-        sleep(.03)
+        sleep(.06)
     elif keys[pygame.K_b]:
         pygame_img=ben[0].image
 
@@ -79,43 +78,25 @@ while True:
         index2+=1
         pygame_img = diamondhead[3+index2%4].image
         flag=1
-        sleep(.03)
+        sleep(.06)
 
 
     if keys[pygame.K_SPACE]:
-        if flag==1:
-            index3+=1
-            if index3%4==3:
-                pygame_img = diamondhead[10].image
-                pygame_img1 = diamondhead[2].image
-            else:
-                pygame_img = diamondhead[7+index3%4].image
-            sleep(.03)
-        else:
-            index4+=1
-            if index4%4==3:
-                pygame_img = pygame.transform.flip(diamondhead[10].image,True,False)
-                pygame_img1 = pygame.transform.flip(diamondhead[2].image,True,False)
-
-            else:
-                pygame_img = pygame.transform.flip(diamondhead[7+index4%4].image,True,False)
-            sleep(.03)
+        index3+=1
+        pygame_img = pygame.transform.flip(diamondhead[7+index3%3].image,True,False)
+        sleep(.1)
 
     if keys[pygame.K_d]:
         if flag == 1:
             pygame_image = diamondhead[index5%3].image
             index5+=1
-            sleep(0.03)
+            sleep(0.3)
         else: 
             pygame_img = pygame.transform.flip(diamondhead[index5%3].image,True,False)
             index5+=1
-            sleep(0.03)
-
-    if index3%4==3 or index4%4==3:    
-        DISPLAYSURF.blit(pygame_img,(300,500))
-        DISPLAYSURF.blit(pygame_img1,(330,500))
-    else:
-        DISPLAYSURF.blit(pygame_img,(300,500))
+            sleep(0.3)
+   
+    DISPLAYSURF.blit(pygame_img,(300,500))
 
     for event in pygame.event.get():
         if event.type == QUIT:

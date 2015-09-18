@@ -10,6 +10,28 @@ pygame.display.set_caption('Animation')
 bgImg = pygame.image.load('background-2.jpg')
 
 
+global mousex, mousey
+
+def mouseinbox(box):
+	if mousex<=box.right and mousex>=box.left and mousey>=box.top and mousey<=box.bottom:
+		return True
+	return False
+
+fontObj = pygame.font.Font('freesansbold.ttf', 32)
+
+ben_cover = pygame.image.load('ben10background.jpg')
+ben_cover = pygame.transform.scale(ben_cover, (1200,700))
+DISPLAYSURF = pygame.display.set_mode((1200,700))
+pygame.display.set_caption('BEN10')
+brown = (165,42,42)
+textNewGame = fontObj.render('New Game', True, (0,0,0))
+textNewGame = pygame.transform.scale(textNewGame, (252,54))
+textNewGameObj = textNewGame.get_rect()
+print textNewGameObj.size
+textNewGameObj.topleft = (200, 350)
+
+start = False;
+
 size = bgImg.get_rect().size
 bgx = 0
 bgy = 700-size[1]
@@ -115,6 +137,24 @@ curr_alien = 'b'
 gftrans = 0
 
 while True:
+
+	while start == False:
+		DISPLAYSURF.fill(brown)
+		DISPLAYSURF.blit(ben_cover,(0,0))
+		DISPLAYSURF.blit(textNewGame, textNewGameObj)
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				pygame.quit()
+				sys.exit()
+			elif event.type == MOUSEMOTION:
+				mousex, mousey = pygame.mouse.get_pos()
+			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
+				mousex, mousey = pygame.mouse.get_pos()
+				if mousex > 200 and mousex < 452 and mousey > 350 and mousey < 404:
+					start = True;
+		pygame.display.update()
+
+	 
 	background()
 	pygame.event.pump()
 	for event in pygame.event.get():
