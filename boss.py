@@ -62,7 +62,7 @@ def whip_left():
 def wrecking_ball():
 		for i in range(11,15):
 			DISPLAYSURF.fill(BLUE)
-			DISPLAYSURF.blit(boss_img[i],(330,150))
+			DISPLAYSURF.blit(boss_img[i],(500,150))
 			pygame.display.update()
 			fpsClock.tick(FPS)
     		sleep(0.5)
@@ -70,10 +70,19 @@ def wrecking_ball():
 def dragon():
 		for i in range(15,19):
 			DISPLAYSURF.fill(BLUE)
-			DISPLAYSURF.blit(boss_img[i],(330,150))
+			DISPLAYSURF.blit(boss_img[i],(500,150))
 			pygame.display.update()
 			fpsClock.tick(FPS)
     		sleep(0.5)
+
+bgx = 10
+bgy = 10
+index1 = 0 # right steps taken
+index2 = 0 # left steps taken
+index3 = 0 #left attack
+index4 = 0 #right attack
+index5 = 0 #alienchange
+flag=0  #Right or Left
 
 while True:
 	attack=int(random.random()*3)
@@ -87,7 +96,6 @@ while True:
 		dragon()
 		sleep(1)
 
-	print attack
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
