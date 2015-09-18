@@ -30,8 +30,8 @@ gfs[1] = [pygame.transform.flip(g,True,False) for g in gfs[0]]
 gfs_attack[0] = gfs[0][6:12]
 gfs_attack[1] = gfs[1][6:12]
 
-gfImgspritetrans = [pygame.image.load('./Images/Ghostfreak/01GhostfreakNormalrighttrans.png'), 
-					pygame.transform.flip(pygame.image.load('./Images/Ghostfreak/01GhostfreakNormalrighttrans.png'), True, False)] 
+gfImgspritetrans = [pygame.image.load('./Images/Ghostfreak/02GhostfreakNormalrighttrans.png'), 
+					pygame.transform.flip(pygame.image.load('./Images/Ghostfreak/02GhostfreakNormalrighttrans.png'), True, False)] 
 
 time = pygame.time.get_ticks()
 fontObj = pygame.font.Font('freesansbold.ttf', 20)
@@ -84,9 +84,9 @@ while True:
 		elif event.type == pygame.KEYUP:
 			if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
 				bgx_change = 0
-<<<<<<< HEAD:Ghostfreakwalk.py
+#<<<<<<< HEAD:Ghostfreakwalk.py
 			
-=======
+#=======
 		elif event.type == pygame.K_SPACE:
 			for gfs_attack in xrange(0,6):
 				pygame_img = gfs_attack[0][gfs_attack]
@@ -97,7 +97,7 @@ while True:
 				DISPLAYSURF.blit(pygame_img,(330 + i*10,500))
 				pygame.display.update()
 
->>>>>>> f2fa2ffd1df197b58c64018cf2ba44e551df1cb8:Ghostfreak.py
+#>>>>>>> f2fa2ffd1df197b58c64018cf2ba44e551df1cb8:Ghostfreak.py
 	bgx += bgx_change
 
 

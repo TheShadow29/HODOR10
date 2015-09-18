@@ -11,7 +11,6 @@ bgImg = pygame.image.load('background-2.jpg')
 
 
 size = bgImg.get_rect().size
-print size
 bgx = 0
 bgy = 700-size[1]
 bgx_change=0
@@ -49,7 +48,6 @@ ben_move = ben[1:]
 ben_left_move = ben_left[1:]
 
 hbf = ['./Images/HeatBlast/'+i for i in hblist]
-
 hbs = [pygame.image.load(i) for i in hbf]
 hbs_t = hbs[:4]
 hbs_right_motion=hbs[6:12]
@@ -68,17 +66,27 @@ wms_left_roll=[pygame.transform.flip(w,True,False) for h in wms_right_roll]
 
 gfs = [[0 for x in range(12)] for x in range(12)] 
 gfs_attack = [[0 for x in range(6)] for x in range(6)] 
-
 gff = ['./Images/Ghostfreak/'+i for i in gflist]
 gfs[0] = [pygame.image.load(i) for i in gff]
 gfs[1] = [pygame.transform.flip(g,True,False) for g in gfs[0]]
 gfs_attack[0] = gfs[0][6:12]
 gfs_attack[1] = gfs[1][6:12]
-
 gfImgspritetrans = [pygame.image.load('./Images/Ghostfreak/02GhostfreakNormalrighttrans.png'), 
 					pygame.transform.flip(pygame.image.load('./Images/Ghostfreak/02GhostfreakNormalrighttrans.png'), True, False)] 
 
-
+diamondhead=[pygame.image.load('Images/Diamondhead/diamondhead_transform_left.png'),          #0
+             pygame.image.load('Images/Diamondhead/diamondhead_transform_left1.png'),         #1
+             pygame.image.load('Images/Diamondhead/diamondhead_transform_left2.png'),         #2
+             pygame.image.load('Images/Diamondhead/diamondhead_move_left1.png'),              #3
+             pygame.image.load('Images/Diamondhead/diamondhead_move_left2.png'),              #4
+             pygame.image.load('Images/Diamondhead/diamondhead_move_left3.png'),              #5
+             pygame.image.load('Images/Diamondhead/diamondhead_move_left4.png'),              #6
+             pygame.image.load('Images/Diamondhead/diamondhead_attack_left1.png'),            #7
+             pygame.image.load('Images/Diamondhead/diamondhead_attack_left2.png'),            #8
+             pygame.image.load('Images/Diamondhead/diamondhead_attack_left3.png'),            #9
+             pygame.image.load('Images/Diamondhead/diamondhead_attack_left4.png'),            #10
+             pygame.image.load('Images/Diamondhead/diamondhead_deform_left1.png'),            #11
+             pygame.image.load('Images/Diamondhead/diamondhead_deform_left2.png')]			  #12
 
 
 alienchange=''
@@ -88,7 +96,7 @@ pygame_img = ben[1]
 
 index1=0
 
-transform={'h':0, 'w':0, 'g':0, 'b':0}
+transform={'h':0, 'w':0, 'g':0, 'b':0, 'd':0}
 
 direction='right'
 
@@ -103,6 +111,8 @@ wm_count_roll=0
 wm_count_roll_left=0
 
 curr_alien = 'b'
+
+gftrans = 0
 
 while True:
 	background()
@@ -128,7 +138,13 @@ while True:
 				if direction =='right':
 					pygame_img=wms[2] 
 				elif direction == 'left':
-					pygame_img = pygame.transform.flip(wms[2],True,False)				
+					pygame_img = pygame.transform.flip(wms[2],True,False)
+			elif curr_alien=='d':
+				if direction =='right':
+					pygame_img = pygame.transform.flip(diamondhead[2],True,False) 
+				elif direction == 'left':
+					pygame_img = diamondhead[2]
+			
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RIGHT:
 				if bgx == -(2890 + k*4095):
@@ -151,6 +167,11 @@ while True:
 				alienchange = 'b'
 			elif event.key == pygame.K_g:
 				alienchange = 'g'
+			elif event.key == pygame.K_x and curr_alien == 'g':
+				gftrans = 1 - gftrans
+			elif event.key == pygame.K_d:
+				alienchange = 'd'
+				
 ###############
 #Attack
 			elif event.key == pygame.K_SPACE:
@@ -162,11 +183,14 @@ while True:
 						pygame.display.update()
 					
 				elif curr_alien=='h' and direction=='left':
-					for hbs_count_attack_left in xrange(0,6):
+					for hbs_count_attack_left in xrange(0,5 ):
 						pygame_img = hbs_attack_left[hbs_count_attack_left]
 						background()
 						DISPLAYSURF.blit(pygame_img,(330,500))
 						pygame.display.update()
+
+
+
 ######################
 #movement + Wildmutt attack
 	keys = pygame.key.get_pressed()
@@ -180,6 +204,9 @@ while True:
 		elif curr_alien=='w':
 			pygame_img=wms_right_motion[int(move_count)%4]				
 			move_count+=0.5
+		elif curr_alien == 'd':
+			pygame_img = pygame.transform.flip(diamondhead[3 + int(move_count)%4],True,False)
+			move_count+=0.5
 		
 	elif keys[pygame.K_LEFT]:
 		if curr_alien=='h':
@@ -191,6 +218,10 @@ while True:
 		elif curr_alien=='w':
 			pygame_img=wms_left_motion[int(move_count)%4]				
 			move_count+=0.5
+		elif curr_alien == 'd':
+			pygame_img = diamondhead[3 + int(move_count)%4]
+			move_count+=0.5
+			
 
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='w' and direction=='right':
@@ -209,7 +240,22 @@ while True:
 				background()	
 				DISPLAYSURF.blit(pygame_img,(330,500))
 				pygame.display.update()
-######################		
+##########
+#ghostfreak sprites
+	if curr_alien == 'g':
+		if direction == 'right':
+			if gftrans == 0:
+				pygame_img = gfs[0][1]
+			elif gftrans == 1:
+				pygame_img = gfImgspritetrans[0]
+		elif direction == 'left':
+			if gftrans == 0:
+				pygame_img = gfs[1][1]
+			elif gftrans == 1:
+				pygame_img = gfImgspritetrans[1]
+
+###########
+
 #Alienchange sprites		
 	if alienchange == 'h':
 		curr_alien = 'h'
@@ -243,7 +289,14 @@ while True:
 			transform[alienchange]=0
 			alienchange=''
 
-##########
+	if alienchange == 'd':
+		curr_alien = 'd'
+		pygame_img = pygame.transform.flip(diamondhead[transform[alienchange]],True,False)
+		transform[alienchange]+=1
+		if transform[alienchange] > 2:
+			transform[alienchange]=0
+			alienchange=''
+#########
 
 	bgx += bgx_change
 
