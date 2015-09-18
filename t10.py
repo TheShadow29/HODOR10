@@ -28,7 +28,6 @@ brown = (165,42,42)
 textNewGame = fontObj.render('New Game', True, (0,0,0))
 textNewGame = pygame.transform.scale(textNewGame, (252,54))
 textNewGameObj = textNewGame.get_rect()
-print textNewGameObj.size
 textNewGameObj.topleft = (200, 350)
 
 
@@ -160,21 +159,21 @@ for i in range(16,20):
 
 
 def whip_left():
-		for i in range(1,11):
-			DISPLAYSURF.fill(BLUE)
-			DISPLAYSURF.blit(boss_img[i],(500,150))
-			fpsClock.tick(FPS)
+	for i in range(1,11):
+		DISPLAYSURF.fill(BLUE)
+		DISPLAYSURF.blit(boss_img[i],(500,150))
+		fpsClock.tick(FPS)
     		
 def wrecking_ball():
-		for i in range(11,15):
-			DISPLAYSURF.fill(BLUE)
-			DISPLAYSURF.blit(boss_img[i],(500,150))
-			fpsClock.tick(FPS)
+	for i in range(11,15):
+		DISPLAYSURF.fill(BLUE)
+		DISPLAYSURF.blit(boss_img[i],(500,150))
+		fpsClock.tick(FPS)
 def dragon():
-		for i in range(15,19):
-			DISPLAYSURF.fill(BLUE)
-			DISPLAYSURF.blit(boss_img[i],(500,150))
-			fpsClock.tick(FPS)
+	for i in range(15,19):
+		DISPLAYSURF.fill(BLUE)
+		DISPLAYSURF.blit(boss_img[i],(500,150))
+		fpsClock.tick(FPS)
 
 
 
@@ -203,7 +202,7 @@ curr_alien = 'b'
 
 gftrans = 0
 
-bosslevel = True
+bosslevel = False
 win = False
 start = False
 lose = False
@@ -298,8 +297,6 @@ while True:
 						for hbs_count_attack_left in xrange(0,5):
 							pygame_img = hbs_attack_left[hbs_count_attack_left]
 							background()
-							print hbs_count_attack_left
-							print pygame_img.get_rect().right
 							DISPLAYSURF.blit(pygame_img,(330,500))
 							pygame.display.update()
 
@@ -419,13 +416,13 @@ while True:
 		pygame.display.update()
 ############################################################################################################################################	
 		while start == True and bosslevel == True:
-			attack=int(random.random()*3)
-			if attack==0:
-				wrecking_ball()
-			elif attack==1:
-				whip_left()
-			elif attack==2:
-				dragon()
+	#		attack=int(random.random()*3)
+	#		if attack==0:
+	#			wrecking_ball()
+	#		elif attack==1:
+	#			whip_left()
+	#		elif attack==2:
+	#			dragon()
 			pygame.event.pump()
 			for event in pygame.event.get():
 				if event.type == QUIT:
@@ -457,10 +454,7 @@ while True:
 					
 				if event.type == pygame.KEYDOWN:
 					if event.key == pygame.K_RIGHT:
-						if bgx == -(2890 + k*4095):
-							k+=1
-						else :
-							bgx_change = 5
+						bgx_change = 5
 						direction='right'				
 					elif event.key == pygame.K_LEFT:
 						if bgx >= 0:
@@ -496,8 +490,6 @@ while True:
 							for hbs_count_attack_left in xrange(0,5):
 								pygame_img = hbs_attack_left[hbs_count_attack_left]
 								background()
-								print hbs_count_attack_left
-								print pygame_img.get_rect().right
 								DISPLAYSURF.blit(pygame_img,(330,500))
 								pygame.display.update()
 
