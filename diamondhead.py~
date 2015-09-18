@@ -1,0 +1,25 @@
+#Code by Umut Bilgic, Ankara, Turkey.
+#Public release: 11/16/2013
+#Release version: 1.1 Beta - Working coin and point system.
+
+from pygame.locals import *
+import pygame
+import sys
+import time
+import random
+import math
+
+pygame.init()
+FPS = 30 # frames per second setting
+fpsClock = pygame.time.Clock()
+# set up the window
+DISPLAYSURF = pygame.display.set_mode((1200,700), 0, 32)
+bgImg = pygame.image.load('city_2.png')
+direction = 'right'
+
+execfile('sprites.py')
+WHITE = (255, 255, 255)
+
+diamondhead=[sprites('Images/Diamondhead/diamondhead_transform_left.png'),
+             sprites('Images/Diamondhead/diamondhead_transform_left1.png'),
+             sprites('Images/Diamondhead/diamondhead_transform_left2.png')]
