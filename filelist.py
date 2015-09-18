@@ -21,3 +21,10 @@ for files in os.listdir("./Images/Ghostfreak/"):
     if fnmatch.fnmatch(files, '*.png'):
         list1.append(files)
 gflist = sorted(list1)
+
+list2=[]
+for files in os.listdir("./Images/Drones/"):
+    if fnmatch.fnmatch(files, '*.png'):
+        list2.append(files)
+drlist = sorted(list2)
+#print drlist
