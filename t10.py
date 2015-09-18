@@ -164,21 +164,17 @@ def whip_left():
 			DISPLAYSURF.fill(BLUE)
 			DISPLAYSURF.blit(boss_img[i],(500,150))
 			fpsClock.tick(FPS)
-    		sleep(0.5)
     		
 def wrecking_ball():
 		for i in range(11,15):
 			DISPLAYSURF.fill(BLUE)
 			DISPLAYSURF.blit(boss_img[i],(500,150))
 			fpsClock.tick(FPS)
-    		sleep(0.5)
-
 def dragon():
 		for i in range(15,19):
 			DISPLAYSURF.fill(BLUE)
 			DISPLAYSURF.blit(boss_img[i],(500,150))
 			fpsClock.tick(FPS)
-    		sleep(0.5)
 
 
 
@@ -464,13 +460,13 @@ while True:
 						if bgx == -(2890 + k*4095):
 							k+=1
 						else :
-							bgx_change = -5
+							bgx_change = 5
 						direction='right'				
 					elif event.key == pygame.K_LEFT:
 						if bgx >= 0:
 							pass
 						else: 
-							bgx_change = 5
+							bgx_change = -5
 						direction='left'
 		#Alienchanges			
 					elif event.key == pygame.K_h:
