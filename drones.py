@@ -114,6 +114,24 @@ wm_count_roll_left=0
 curr_alien = 'b'
 
 while True:
+	
+	while start == False:
+		DISPLAYSURF.fill(brown)
+		DISPLAYSURF.blit(ben_cover,(0,0))
+		DISPLAYSURF.blit(textNewGame, textNewGameObj)
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				pygame.quit()
+				sys.exit()
+			elif event.type == MOUSEMOTION:
+				mousex, mousey = pygame.mouse.get_pos()
+			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
+				mousex, mousey = pygame.mouse.get_pos()
+				if mousex > 200 and mousex < 452 and mousey > 350 and mousey < 404:
+					start = True;
+
+
+	pygame.display.update()
 	background()
 	pygame.event.pump()
 	for event in pygame.event.get():
@@ -258,18 +276,17 @@ while True:
 
 
 #DRONES#####
-############
 	for i in range(0,5):
 		if dr_go == True:
 			for j in range(0,1):
-				DISPLAYSURF.blit(dr_right[0],(1200-drx[i],500+dry))
-				DISPLAYSURF.blit(dr_right[1],(1200-drx[i]-100,500+dry))			
+				DISPLAYSURF.blit(dr_right[0],(1200-drx[i],400+dry))
+				DISPLAYSURF.blit(dr_right[1],(1200-drx[i]-100,400+dry))			
 				drx[i]+=i
 				dry += (2*random.random()-1)
 				if drx[i]>1100:
 					drx[i] = 0
-				print dr_right[1].get_rect().right
-
+				print dr_right[0].get_rect().left
+############
 	if dry>100 or dry<-100:
 		dry=0
 	DISPLAYSURF.blit(pygame_img,(330,500))
