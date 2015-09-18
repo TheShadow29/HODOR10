@@ -11,6 +11,7 @@ bgImg = pygame.image.load('background-2.jpg')
 
 
 size = bgImg.get_rect().size
+print size
 bgx = 0
 bgy = 700-size[1]
 bgx_change=0
@@ -25,7 +26,7 @@ execfile('filelist.py')
 execfile('sprites.py')
 
 def background():
-	DISPLAYSURF.blit(bgImg, (bgx, bgy))
+	DISPLAYSURF.fill((0,0,0))
 	DISPLAYSURF.blit(bgImg, (bgx+(k-1)*size[0], bgy))
 	DISPLAYSURF.blit(bgImg, (bgx+k*size[0], bgy))
 	time = pygame.time.get_ticks()
@@ -83,7 +84,6 @@ gfImgspritetrans = [pygame.image.load('./Images/Ghostfreak/01GhostfreakNormalrig
 
 
 
-
 alienchange=''
 curr_alien=''
 
@@ -117,16 +117,17 @@ while True:
 	pygame.event.pump()
 	keys = pygame.key.get_pressed()
 	if keys[pygame.K_RIGHT]:
-		if bgx == -(3715 + k*3715):
+		if bgx == -(2890 + k*4095):
 			k+=1
 		else :
 			bgx_change = -5
 		direction='right'
 		index1+=0.5
-        pygame_img = ben[int(index1)%4].image
-        if curr_alien=='h':
-			pygame_img=hbs_right_motion[hb_count_move_right%6].image
+		pygame_img = ben[int(index1)%4].image
+		if curr_alien == 'h':
+			pygame_img=hbs_right_motion[hb_count_move_right%6].image 
 			hb_count_move_right+=1
+
 	elif keys[pygame.K_LEFT]:
 		if bgx >= 0:
 			pass
@@ -136,12 +137,15 @@ while True:
 		if curr_alien=='h':
 			pygame_img=hbs_left_motion[hb_count_move_left%6]
 			hb_count_move_left+=1
+		elif curr_alien=='w':
+			pygame_img=wms_right_motion[wm_count_move_right%4].image				
+			wm_count_move_right+=1
+
 	elif keys[pygame.K_h]:
 		alienchange='h'
 	elif keys[pygame.K_w]:
 		alienchange='w'
-	elif keys[pygame.K_a]:
-		print bgx
+	
 	if alienchange == 'h':
 		curr_alien = 'h'
 		pygame_img = hbs[transform[alienchange]].image
@@ -158,9 +162,41 @@ while True:
 			transform[alienchange]=0
 			alienchange=''
 
+	elif keys[pygame.K_SPACE]:
+		if curr_alien=='h' and direction=='right':
+			for hbs_count_attack_right in xrange(0,6):
+				pygame_img = hbs_attack_right[int(hbs_count_attack_right)].image
+				background()
+				DISPLAYSURF.blit(pygame_img,(330,500))
+				pygame.display.update()
+			
+		elif curr_alien=='h' and direction=='left':
+			for hbs_count_attack_left in xrange(0,6):
+				pygame_img = hbs_attack_left[hbs_count_attack_left]
+				background()
+				DISPLAYSURF.blit(pygame_img,(330,500))
+				pygame.display.update()
 
+		elif curr_alien=='w' and direction=='right':
+			for wms_count_roll_right in xrange(0,3):
+				pygame_img = wms_right_roll[wms_count_roll_right].image
+				bgx-=5
+				bgx-=5
+				background()	
+				DISPLAYSURF.blit(pygame_img,(330,500))
+				pygame.display.update()
+
+		elif curr_alien=='w' and direction=='left':
+			for wms_count_roll_left in xrange(0,3):
+				pygame_img = wms_left_roll[wms_count_roll_left]
+				bgx+=5
+				bgx+=5
+				background()	
+				DISPLAYSURF.blit(pygame_img,(330,500))
+				pygame.display.update()
 
 	bgx += bgx_change
+
 	DISPLAYSURF.blit(pygame_img,(330,600))
 	pygame.display.update()
 	fpsClock.tick(FPS)
