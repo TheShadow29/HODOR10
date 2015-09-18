@@ -179,12 +179,12 @@ while True:
 ######################
 #movement + Wildmutt attack
 	keys = pygame.key.get_pressed()
-<<<<<<< HEAD
+#<<<<<<< HEAD
 	if keys[pygame.K_RIGHT] and curr_alien =='h':
 		pygame_img=hbs_right_motion[hb_count_move_right%6].image 
 		hb_count_move_right+=1
 
-=======
+#=======
 	if keys[pygame.K_RIGHT]:
 		if curr_alien == 'h':
 			pygame_img=hbs_right_motion[int(move_count)%6] 
@@ -196,7 +196,7 @@ while True:
 			pygame_img=wms_right_motion[int(move_count)%4]				
 			move_count+=0.5
 		
->>>>>>> ba7c819db3f131dba347a11f93a68cf84bdd3d6b
+#>>>>>>> ba7c819db3f131dba347a11f93a68cf84bdd3d6b
 	elif keys[pygame.K_LEFT]:
 		if curr_alien=='h':
 			pygame_img=hbs_left_motion[int(move_count)%6]

@@ -40,17 +40,19 @@ bgy = 700-size[1]
 bgx_change=0
 k=0
 timeMax = 90
-healthTot = 60
+healthTot = 100
 #healthRemaining = 100 - healthTot
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
+
+ 
 
 execfile('filelist.py')
 
 def background():
 	DISPLAYSURF.fill((0,0,0))
-	DISPLAYSURF.blit(bgImg, (bgx+(k-1)*size[0], bgy))
-	DISPLAYSURF.blit(bgImg, (bgx+k*size[0], bgy))
+	for i in xrange(0,5):
+		DISPLAYSURF.blit(bgImg, (bgx+i*size[0], bgy))
 	time = pygame.time.get_ticks()
 	fontObj = pygame.font.Font('freesansbold.ttf', 20)
 	timeSurfaceObj = fontObj.render(str(time/1000), True, GREEN)
@@ -199,7 +201,7 @@ while True:
 			
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RIGHT:
-				if bgx == -(2890 + k*4095):
+				if bgx == -(3715 + k*3715):
 					k+=1
 				else :
 					bgx_change = -5
@@ -398,6 +400,8 @@ while True:
 					drx[i]+=i+5
 				elif keys[pygame.K_LEFT]:
 					drx[i]+=i-5
+				elif keys[pygame.K_SPACE] and curr_alien=='w':
+					drx[i]+=i+10
 				else:
 					drx[i]+=i
 					
