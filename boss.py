@@ -4,19 +4,20 @@ import sys
 import time
 import random
 import math
+import random 
 
 from time import sleep
 
 
 pygame.init()
-FPS = 30 # frames per second setting
+FPS = 20 # frames per second setting
 fpsClock = pygame.time.Clock()
 # set up the window
 DISPLAYSURF = pygame.display.set_mode((1200,700), 0, 32)
-bgImg = pygame.image.load('city_2.png')
+
+BLUE=(0,0,255)
 
 execfile('sprites.py')
-WHITE = (0, 255, 255)
 
 boss = [sprites('Images/Boss/18.png'),
 		sprites('Images/Boss/0.png'),
@@ -40,13 +41,54 @@ boss = [sprites('Images/Boss/18.png'),
 		sprites('Images/Boss/23.png')
 		]
 
+
+boss_img = []
+
+
+for i in range(0,15):
+	boss_img.append(pygame.transform.scale(boss[i].image,(500,500)))
+for i in range(16,20):
+	boss_img.append(pygame.transform.scale(pygame.transform.flip(boss[i].image,True,False),(500,500)))
+
+
 def whip_left():
-		for i in range(0,10):
-			DISPLAYSURF.fill(WHITE)
-			DISPLAYSURF.blit(boss[1+i%10].image,(330,500))
+		for i in range(1,11):
+			DISPLAYSURF.fill(BLUE)
+			DISPLAYSURF.blit(boss_img[i],(500,150))
 			pygame.display.update()
-    		fpsClock.tick(FPS)
-    		sleep(1)
+			fpsClock.tick(FPS)
+    		sleep(0.5)
+    		
+def wrecking_ball():
+		for i in range(11,15):
+			DISPLAYSURF.fill(BLUE)
+			DISPLAYSURF.blit(boss_img[i],(330,150))
+			pygame.display.update()
+			fpsClock.tick(FPS)
+    		sleep(0.5)
+
+def dragon():
+		for i in range(15,19):
+			DISPLAYSURF.fill(BLUE)
+			DISPLAYSURF.blit(boss_img[i],(330,150))
+			pygame.display.update()
+			fpsClock.tick(FPS)
+    		sleep(0.5)
 
 while True:
-	whip_left()
+	attack=int(random.random()*3)
+	if attack==0:
+		wrecking_ball()
+		sleep(1)
+	elif attack==1:
+		whip_left()
+		sleep(1)
+	elif attack==2:
+		dragon()
+		sleep(1)
+
+	print attack
+	for event in pygame.event.get():
+		if event.type == QUIT:
+			pygame.quit()
+			sys.exit()
