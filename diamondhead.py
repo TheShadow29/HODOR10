@@ -49,12 +49,12 @@ ben = [sprites('Images/sprites/ben_walk_right_FILES/0.png'),
 pygame_img = ben[0].image
 bgx = 10
 bgy = 10
-index1 = 0
-index2 = 0
-index3 = 0
-index4 = 0
-index5 = 0
-flag=0
+index1 = 0 # right steps taken
+index2 = 0 # left steps taken
+index3 = 0 #left attack
+index4 = 0 #right attack
+index5 = 0 #alienchange
+flag=0  #Right or Left
 while True:
     DISPLAYSURF.fill(WHITE)
     pygame.event.pump()
