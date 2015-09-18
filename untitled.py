@@ -104,6 +104,8 @@ wm_count_roll_left=0
 
 curr_alien = 'b'
 
+gftrans = 0
+
 while True:
 	background()
 	pygame.event.pump()
@@ -128,7 +130,8 @@ while True:
 				if direction =='right':
 					pygame_img=wms[2] 
 				elif direction == 'left':
-					pygame_img = pygame.transform.flip(wms[2],True,False)				
+					pygame_img = pygame.transform.flip(wms[2],True,False)	
+			
 		if event.type == pygame.KEYDOWN:
 			if event.key == pygame.K_RIGHT:
 				if bgx == -(2890 + k*4095):
@@ -151,23 +154,28 @@ while True:
 				alienchange = 'b'
 			elif event.key == pygame.K_g:
 				alienchange = 'g'
+			elif event.key == pygame.K_x and curr_alien == 'g':
+				gftrans = 1 - gftrans
+				
 ###############
 #Attack
 			elif event.key == pygame.K_SPACE:
 				if curr_alien=='h' and direction=='right':
 					print
-					for hbs_count_attack_right in xrange(0,6):
+					for hbs_count_attack_right in xrange(0,5):
+						print hbs_count_attack_right
 						pygame_img = hbs_attack_right[int(hbs_count_attack_right)]
 						background()
 						DISPLAYSURF.blit(pygame_img,(330,500))
 						pygame.display.update()
 					
 				elif curr_alien=='h' and direction=='left':
-					for hbs_count_attack_left in xrange(0,6):
+					for hbs_count_attack_left in xrange(0,5 ):
 						pygame_img = hbs_attack_left[hbs_count_attack_left]
 						background()
 						DISPLAYSURF.blit(pygame_img,(330,500))
 						pygame.display.update()
+
 ######################
 #movement + Wildmutt attack
 	keys = pygame.key.get_pressed()
@@ -192,6 +200,7 @@ while True:
 		elif curr_alien=='w':
 			pygame_img=wms_left_motion[int(move_count)%4]				
 			move_count+=0.5
+			
 
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='w' and direction=='right':
@@ -210,7 +219,22 @@ while True:
 				background()	
 				DISPLAYSURF.blit(pygame_img,(330,500))
 				pygame.display.update()
-######################		
+##########
+#ghostfreak sprites
+	if curr_alien == 'g':
+		if direction == 'right':
+			if gftrans == 0:
+				pygame_img = gfs[0][1]
+			elif gftrans == 1:
+				pygame_img = gfImgspritetrans[0]
+		elif direction == 'left':
+			if gftrans == 0:
+				pygame_img = gfs[1][1]
+			elif gftrans == 1:
+				pygame_img = gfImgspritetrans[1]
+
+###########
+
 #Alienchange sprites		
 	if alienchange == 'h':
 		curr_alien = 'h'
@@ -243,8 +267,7 @@ while True:
 		if transform[alienchange] > 1:
 			transform[alienchange]=0
 			alienchange=''
-
-##########
+#########
 
 	bgx += bgx_change
 
