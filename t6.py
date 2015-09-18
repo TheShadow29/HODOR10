@@ -1,6 +1,7 @@
 import pygame, sys, time
 from pygame.locals import *
 from time import sleep
+import random
 
 pygame.init()
 FPS = 30 # frames per second setting
@@ -75,6 +76,15 @@ wm_count_move_left =0
 wm_count_roll=0
 wm_count_roll_left=0
 
+drf = ['./Images/Drones/'+i for i in drlist] 
+
+drs = [sprites(i) for i in drf]
+dr_right = drs[:2]
+dr_left = drs[2:]
+drx = [i for i in xrange(1,5)]
+dry = 0
+dr_go=True
+
 def background():
 	time = pygame.time.get_ticks()
 	DISPLAYSURF.fill(WHITE)
@@ -85,7 +95,12 @@ def background():
 	pygame.draw.rect(DISPLAYSURF, GREEN, (20, 10, 204, 20), 1)
 	pygame.draw.rect(DISPLAYSURF, GREEN, health)
 
-
+def checkCollision(sprite1, sprite2):
+    col = pygame.sprite.collide_rect(sprite1, sprite2)
+    if col == True:
+        return True
+    else:
+    	return False
 
 
 while True:
@@ -195,6 +210,21 @@ while True:
 				pygame_img=wms_right_motion[0].image
 			if curr_alien=='w' and direction=='left':
 				pygame_img=wms_left_motion[0]
+#DRONES#####
+############
+	for i in xrange(0,4):
+		if dr_go == True:
+			for j in range(0,1):
+				DISPLAYSURF.blit(dr_right[0].image,(1200-drx[i],500+dry))
+				DISPLAYSURF.blit(dr_right[1].image,(1200-drx[i]-100,500+dry))			
+				drx[i]+=i+1
+				dry += (2*random.random()-1)
+				if drx[i]>1100:
+					drx[i] = 0
+				print checkCollision(hbs_attack_right[0],dr_right[0])
+
+	if dry>100 or dry<-100:
+		dry=0
 
 
 	pygame.display.update()

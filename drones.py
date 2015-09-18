@@ -40,6 +40,10 @@ def background():
 	DISPLAYSURF.blit(timeSurfaceObj, timeRectObj)
 	pygame.display.update()
 
+
+	
+
+
 ben = [pygame.image.load('Images/sprites/ben_walk_right_FILES/0.png'), 
        pygame.image.load('Images/sprites/ben_walk_right_FILES/1.png'),
        pygame.image.load('Images/sprites/ben_walk_right_FILES/2.png'),
@@ -56,6 +60,7 @@ hbs_t = hbs[:4]
 hbs_right_motion=hbs[6:12]
 hbs_left_motion =[pygame.transform.flip(h,True,False) for h in hbs_right_motion]
 hbs_attack_right = hbs[13:]
+hbs_attack_right.append(hbs[3])
 hbs_attack_left =[pygame.transform.flip(h,True,False) for h in hbs_attack_right]
 
 wmf = ['./Images/Wildmutt/'+i for i in wmlist]
@@ -84,7 +89,7 @@ drf = ['./Images/Drones/'+i for i in drlist]
 drs = [pygame.image.load(i) for i in drf]
 dr_right = drs[:2]
 dr_left = drs[2:]
-drx = [i for i in xrange(0,5)]
+drx = [i for i in xrange(1,5)]
 dry = 0
 dr_go=True
 
@@ -114,24 +119,6 @@ wm_count_roll_left=0
 curr_alien = 'b'
 
 while True:
-	
-	while start == False:
-		DISPLAYSURF.fill(brown)
-		DISPLAYSURF.blit(ben_cover,(0,0))
-		DISPLAYSURF.blit(textNewGame, textNewGameObj)
-		for event in pygame.event.get():
-			if event.type == QUIT:
-				pygame.quit()
-				sys.exit()
-			elif event.type == MOUSEMOTION:
-				mousex, mousey = pygame.mouse.get_pos()
-			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
-				mousex, mousey = pygame.mouse.get_pos()
-				if mousex > 200 and mousex < 452 and mousey > 350 and mousey < 404:
-					start = True;
-
-
-	pygame.display.update()
 	background()
 	pygame.event.pump()
 	for event in pygame.event.get():
@@ -221,7 +208,7 @@ while True:
 
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='w' and direction=='right':
-			for wms_count_roll_right in xrange(0,3):
+			for wms_count_roll_right in xrange(0,2):
 				pygame_img = wms_right_roll[wms_count_roll_right]
 				bgx-=5
 				bgx-=5
@@ -229,7 +216,7 @@ while True:
 				DISPLAYSURF.blit(pygame_img,(330,500))
 				pygame.display.update()
 		elif curr_alien=='w' and direction=='left':
-			for wms_count_roll_left in xrange(0,3):
+			for wms_count_roll_left in xrange(0,2):
 				pygame_img = wms_left_roll[wms_count_roll_left]
 				bgx+=5
 				bgx+=5
@@ -276,17 +263,40 @@ while True:
 
 
 #DRONES#####
-	for i in range(0,5):
+############
+	for i in xrange(0,4):
 		if dr_go == True:
 			for j in range(0,1):
-				DISPLAYSURF.blit(dr_right[0],(1200-drx[i],400+dry))
-				DISPLAYSURF.blit(dr_right[1],(1200-drx[i]-100,400+dry))			
-				drx[i]+=i
+				DISPLAYSURF.blit(dr_right[0],(1200-drx[i],500+dry))
+				#dr_right[0].get_rect().right=1200-drx[i]
+				#dr_right[0].get_rect().bottom=500+dry
+				DISPLAYSURF.blit(dr_right[1],(1200-drx[i]-100,500+dry))	
+				#dr_right[1].get_rect().right=1200-drx[i]-100
+				#dr_right[1].get_rect().bottom=500+dry		
+				if drx[i]>=670 and abs(dry)>=0:
+					if curr_alien=='h':
+						if pygame_img == hbs_attack_right[0] or pygame_img == hbs_attack_right[1] or pygame_img==hbs_attack_right[2] or pygame_img==hbs_attack_right[3] or pygame_img==hbs_attack_right[4]:
+							#if 
+							#print 'good'
+							drx[i]=0
+							dry=0
+				if drx[i]>=670 and abs(dry)>=0:
+					if curr_alien=='w':
+						if pygame_img==wms_right_roll[0] or pygame_img==wms_right_roll[1]:
+							print 'good'
+							drx[i]=0
+							dry=0
+						else:
+							print  'bad'					
+
+
+				drx[i]+=i+1
 				dry += (2*random.random()-1)
 				if drx[i]>1100:
 					drx[i] = 0
-				print dr_right[0].get_rect().left
-############
+
+				
+
 	if dry>100 or dry<-100:
 		dry=0
 	DISPLAYSURF.blit(pygame_img,(330,500))
