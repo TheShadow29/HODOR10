@@ -51,14 +51,6 @@ textLose = pygame.transform.scale(textLose, (252,54))
 textLoseObj = textLose.get_rect()
 textLoseObj.topleft = (500, 50)
 
-
-start = False
-lose = False
-win = False
-
-timeMax = 5
-healthTot = 100
-
 textScore = fontObj.render('Score:', True, GREEN)
 textScore = pygame.transform.scale(textScore, (50,20))
 textScoreObj = textScore.get_rect()
@@ -75,13 +67,11 @@ timeMax = 90
 healthTot = 100
 #healthRemaining = 100 - healthTot
 
-
- 
-
 execfile('filelist.py')
 
 def background():
 	DISPLAYSURF.fill((0,0,0))
+#EDIT IF TIME PERMITS
 	for i in xrange(0,5):
 		DISPLAYSURF.blit(bgImg, (bgx+i*size[0], bgy))
 	time = pygame.time.get_ticks()
@@ -192,9 +182,9 @@ curr_alien = 'b'
 
 gftrans = 0
 
-
-
-
+start = False
+lose = False
+win = False
 
 while True:
 
@@ -213,8 +203,8 @@ while True:
 				if mousex > 200 and mousex < 452 and mousey > 350 and mousey < 404:
 					start = True;
 		pygame.display.update()
+	
 	while start == True and lose == False and win == False:
-
 		background()
 		pygame.event.pump()
 		for event in pygame.event.get():
@@ -500,36 +490,42 @@ while True:
 		pygame.display.update()
 		fpsClock.tick(FPS)
 
-
-
-
 	while lose == True:
 		DISPLAYSURF.fill(brown)
 		DISPLAYSURF.blit(ben_cover,(0,0))
 		DISPLAYSURF.blit(textPlayAgain, textPlayAgainObj)
 		DISPLAYSURF.blit(textLose, textLoseObj)
-		for event in pygame.event.get():
-			if event.type == QUIT:
-				pygame.quit()
-				sys.exit()
-			elif event.type == MOUSEMOTION:
-				mousex, mousey = pygame.mouse.get_pos()
-			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
-				mousex, mousey = pygame.mouse.get_pos()
-				print mousex, mousey
-				if mousex > 200 and mousex < 452 and mousey >200  and mousey < 404:
-					start = True;
-
 		DISPLAYSURF.blit(textQuit, textQuitObj)
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-			elif event.type == MOUSEMOTION:
-				mousex, mousey = pygame.mouse.get_pos()
 			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
 				mousex, mousey = pygame.mouse.get_pos()
-				if mousex > 200 and mousex < 452 and mousey >350  and mousey < 404:
+				print mousex, mousey
+				if mousex > 200 and mousex < 452 and mousey >200  and mousey < 300:
+					direction='right'
+
+					hbs_count_attack_right = 0
+					hb_count_move_left = 0
+					hbs_count_attack_left=0
+
+					move_count = 0
+
+					wm_count_move_left =0
+					wm_count_roll=0
+					wm_count_roll_left=0
+
+					curr_alien = 'b'
+
+					gftrans = 0
+
+					start = False
+					lose = False
+					win = False
+					healthTot = 100
+					drx = [i for i in xrange(1,5)]
+				elif mousex > 200 and mousex < 452 and mousey >350  and mousey < 404:
 					pygame.quit()
 					sys.exit()
 
