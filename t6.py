@@ -124,6 +124,7 @@ while True:
 
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='h' and direction=='right':
+			print "FIRE"
 			for hbs_count_attack_right in xrange(0,6):
 				pygame_img = hbs_attack_right[int(hbs_count_attack_right)].image
 				DISPLAYSURF.fill(WHITE)

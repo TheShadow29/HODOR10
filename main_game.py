@@ -116,17 +116,9 @@ while True:
 				bgx_change = 0
 	pygame.event.pump()
 	keys = pygame.key.get_pressed()
-	if keys[pygame.K_RIGHT]:
-		if bgx == -(2890 + k*4095):
-			k+=1
-		else :
-			bgx_change = -5
-		direction='right'
-		index1+=0.5
-		pygame_img = ben[int(index1)%4].image
-		if curr_alien == 'h':
-			pygame_img=hbs_right_motion[hb_count_move_right%6].image 
-			hb_count_move_right+=1
+	if keys[pygame.K_RIGHT] and curr_alien = 'h':
+		pygame_img=hbs_right_motion[hb_count_move_right%6].image 
+		hb_count_move_right+=1
 
 	elif keys[pygame.K_LEFT]:
 		if bgx >= 0:
@@ -145,25 +137,10 @@ while True:
 		alienchange='h'
 	elif keys[pygame.K_w]:
 		alienchange='w'
-	
-	if alienchange == 'h':
-		curr_alien = 'h'
-		pygame_img = hbs[transform[alienchange]].image
-		transform[alienchange]+=1
-		if transform[alienchange]>3:
-			transform[alienchange]=0
-			alienchange=''
-
-	if alienchange == 'w':
-		curr_alien = 'w'
-		pygame_img = wms[transform[alienchange]].image
-		transform[alienchange]+=1
-		if transform[alienchange]>2:
-			transform[alienchange]=0
-			alienchange=''
 
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='h' and direction=='right':
+			print "FIRE"
 			for hbs_count_attack_right in xrange(0,6):
 				pygame_img = hbs_attack_right[int(hbs_count_attack_right)].image
 				background()
@@ -194,6 +171,23 @@ while True:
 				background()	
 				DISPLAYSURF.blit(pygame_img,(330,500))
 				pygame.display.update()
+	
+	if alienchange == 'h':
+		curr_alien = 'h'
+		pygame_img = hbs[transform[alienchange]].image
+		transform[alienchange]+=1
+		if transform[alienchange]>3:
+			transform[alienchange]=0
+			alienchange=''
+
+	if alienchange == 'w':
+		curr_alien = 'w'
+		pygame_img = wms[transform[alienchange]].image
+		transform[alienchange]+=1
+		if transform[alienchange]>2:
+			transform[alienchange]=0
+			alienchange=''
+
 
 	bgx += bgx_change
 
