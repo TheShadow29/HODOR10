@@ -1,5 +1,6 @@
 import pygame, sys, time
 from pygame.locals import *
+import random
 
 pygame.init()
 FPS = 30 # frames per second setting
@@ -110,6 +111,15 @@ diamondhead=[pygame.image.load('Images/Diamondhead/diamondhead_transform_left.pn
              pygame.image.load('Images/Diamondhead/diamondhead_deform_left1.png'),            #11
              pygame.image.load('Images/Diamondhead/diamondhead_deform_left2.png')]			  #12
 
+drf = ['./Images/Drones/'+i for i in drlist] 
+
+drs = [pygame.image.load(i) for i in drf]
+dr_right = drs[:2]
+dr_left = drs[2:]
+drx = [i for i in xrange(1,5)]
+dry = 0
+dr_go=True
+
 
 alienchange=''
 curr_alien=''
@@ -117,6 +127,7 @@ curr_alien=''
 pygame_img = ben[1]
 
 index1=0
+index3=0	#for diamondhead
 
 transform={'h':0, 'w':0, 'g':0, 'b':0, 'd':0}
 
@@ -229,6 +240,12 @@ while True:
 						DISPLAYSURF.blit(pygame_img,(330,500))
 						pygame.display.update()
 
+				if curr_alien=='d' and direction=='right':
+					index3+=1
+					for dh in xrange(0,2):
+						pygame_img = pygame.transform.flip(diamondhead[7+index3%3],True,False)
+        			#sleep(.1)
+
 
 
 ######################
@@ -265,7 +282,7 @@ while True:
 
 	elif keys[pygame.K_SPACE]:
 		if curr_alien=='w' and direction=='right':
-			for wms_count_roll_right in xrange(0,3):
+			for wms_count_roll_right in xrange(0,2):
 				pygame_img = wms_right_roll[wms_count_roll_right]
 				bgx-=5
 				bgx-=5
@@ -339,7 +356,46 @@ while True:
 #########
 
 	bgx += bgx_change
+#DRONES#####
+############
+	for i in xrange(0,4):
+		if dr_go == True:
+			for j in range(0,1):
+				DISPLAYSURF.blit(dr_right[0],(1200-drx[i],500+dry))
+				#dr_right[0].get_rect().right=1200-drx[i]
+				#dr_right[0].get_rect().bottom=500+dry
+				DISPLAYSURF.blit(dr_right[1],(1200-drx[i]-100,500+dry))	
+				#dr_right[1].get_rect().right=1200-drx[i]-100
+				#dr_right[1].get_rect().bottom=500+dry		
+				if drx[i]>=670 and abs(dry)>=0.5:
+					if curr_alien=='h':
+						#if pygame_img != hbs[3]:
+						if pygame_img == hbs_attack_right[0] or pygame_img == hbs_attack_right[1] or pygame_img==hbs_attack_right[2] or pygame_img==hbs_attack_right[3] or pygame_img==hbs_attack_right[4]:
+							#if 
+							print 'good'
+							drx[i]=0
+							dry=0
+						else:
+							print 'bad'
+				if drx[i]>=690 and abs(dry)>=0.5:
+					if curr_alien=='w':
+						if pygame_img==wms_right_roll[0] or pygame_img==wms_right_roll[1]:
+							print 'good'
+							drx[i]=0
+							dry=0
+						else:
+							print  'bad'					
 
+
+				drx[i]+=i+1
+				dry += (2*random.random()-1)
+				if drx[i]>1100:
+					drx[i] = 0
+
+				
+
+	if dry>100 or dry<-100:
+		dry=0
 	DISPLAYSURF.blit(pygame_img,(330,500))
 	pygame.display.update()
 	fpsClock.tick(FPS)
