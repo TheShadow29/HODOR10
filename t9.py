@@ -3,6 +3,9 @@ from pygame.locals import *
 import random
 from time import sleep
 
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
+
 pygame.init()
 FPS = 30 # frames per second setting
 fpsClock = pygame.time.Clock()
@@ -29,8 +32,13 @@ brown = (165,42,42)
 textNewGame = fontObj.render('New Game', True, (0,0,0))
 textNewGame = pygame.transform.scale(textNewGame, (252,54))
 textNewGameObj = textNewGame.get_rect()
-print textNewGameObj.size
+#print textNewGameObj.size
 textNewGameObj.topleft = (200, 350)
+
+textScore = fontObj.render('Score:', True, GREEN)
+textScore = pygame.transform.scale(textScore, (50,20))
+textScoreObj = textScore.get_rect()
+textScoreObj.topright = (790, 10)
 
 start = False;
 
@@ -42,8 +50,7 @@ k=0
 timeMax = 90
 healthTot = 100
 #healthRemaining = 100 - healthTot
-WHITE = (255, 255, 255)
-GREEN = (0, 255, 0)
+
 
  
 
@@ -59,9 +66,16 @@ def background():
 	timeRectObj = timeSurfaceObj.get_rect()
 	timeRectObj.center = (400, 20)
 	health = pygame.Rect(21, 12, healthTot*200/100, 16)
+
+	scoreSurfaceObj = fontObj.render(str(score),True,GREEN)
+	scoreRectObj = scoreSurfaceObj.get_rect()
+	scoreRectObj.center = (800,20)
+
 	pygame.draw.rect(DISPLAYSURF, GREEN, (20, 10, 204, 20), 1)
 	pygame.draw.rect(DISPLAYSURF, GREEN, health)
 	DISPLAYSURF.blit(timeSurfaceObj, timeRectObj)
+	DISPLAYSURF.blit(scoreSurfaceObj,scoreRectObj)
+	DISPLAYSURF.blit(textScore, textScoreObj)
 	pygame.display.update()
 
 ben = [pygame.image.load('Images/sprites/ben_walk_right_FILES/0.png'), 
@@ -114,6 +128,10 @@ diamondhead=[pygame.image.load('Images/Diamondhead/diamondhead_transform_left.pn
              pygame.image.load('Images/Diamondhead/diamondhead_deform_left1.png'),            #11
              pygame.image.load('Images/Diamondhead/diamondhead_deform_left2.png')]			  #12
 
+dmra = [pygame.transform.flip(diamondhead[7+dh%3],True,False) for dh in xrange(0,3)]
+
+
+
 drf = ['./Images/Drones/'+i for i in drlist] 
 
 drs = [pygame.image.load(i) for i in drf]
@@ -149,6 +167,11 @@ wm_count_roll_left=0
 curr_alien = 'b'
 
 gftrans = 0
+
+score = 0
+
+
+
 
 while True:
 
@@ -250,7 +273,7 @@ while True:
 				if curr_alien=='d' and direction=='right':
 					index3+=1
 					for dh in xrange(0,3):
-						pygame_img = pygame.transform.flip(diamondhead[7+dh%3],True,False)
+						pygame_img = dmra[dh]
 						background()
 						DISPLAYSURF.blit(pygame_img,(330,500))
 						sleep(0.01)
@@ -364,6 +387,9 @@ while True:
 		if transform[alienchange] > 2:
 			transform[alienchange]=0
 			alienchange=''
+
+
+
 #########
 
 	bgx += bgx_change
@@ -383,19 +409,47 @@ while True:
 						#if pygame_img != hbs[3]:
 						if pygame_img == hbs_attack_right[0] or pygame_img == hbs_attack_right[1] or pygame_img==hbs_attack_right[2] or pygame_img==hbs_attack_right[3] or pygame_img==hbs_attack_right[4]:
 							#if 
-							print 'good'
+							#print 'good'
+							score+=5
 							drx[i]=0
 							dry=0
 						else:
-							print 'bad'
+							healthTot-=0.5
 				if drx[i]>=690 and abs(dry)>=0.5:
 					if curr_alien=='w':
 						if pygame_img==wms_right_roll[0] or pygame_img==wms_right_roll[1]:
-							print 'good'
+							#print 'good'
+							score+=5
 							drx[i]=0
 							dry=0
 						else:
-							print  'bad'					
+							#print  'bad'	
+							healthTot-=0.5	
+
+				if drx[i]>=690 and abs(dry)>=0.5:
+					if curr_alien=='g':
+						if gftrans==0:
+							print 'bad'
+							healthTot-=0.5
+					if curr_alien=='b':
+						healthTot-=0.5
+
+				if drx[i]>=670 and abs(dry)>=0.5:
+					if curr_alien=='d':
+						#if pygame_img != hbs[3]:
+						if pygame_img == dmra[0] or pygame_img == dmra[1] or pygame_img==dmra[2]:
+							#if 
+							#print 'good'
+							score+=5
+							drx[i]=0
+							dry=0
+						else:
+							#print 'bad'
+							healthTot-=0.5
+
+
+
+
 				if keys[pygame.K_RIGHT]:
 					drx[i]+=i+5
 				elif keys[pygame.K_LEFT]:
