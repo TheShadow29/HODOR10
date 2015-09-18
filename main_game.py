@@ -116,7 +116,7 @@ while True:
 				bgx_change = 0
 	pygame.event.pump()
 	keys = pygame.key.get_pressed()
-	if keys[pygame.K_RIGHT] and curr_alien = 'h':
+	if keys[pygame.K_RIGHT] and curr_alien =='h':
 		pygame_img=hbs_right_motion[hb_count_move_right%6].image 
 		hb_count_move_right+=1
 

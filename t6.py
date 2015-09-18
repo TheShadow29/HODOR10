@@ -134,7 +134,7 @@ while True:
 				pygame.display.update()
 			
 		elif curr_alien=='h' and direction=='left':
-			for hbs_count_attack_left in xrange(0,6):
+			for hbs_count_attack_left in xrange(0,5):
 				pygame_img = hbs_attack_left[hbs_count_attack_left]
 				DISPLAYSURF.fill(WHITE)
 				DISPLAYSURF.blit(bgImg, (bgx, bgy))	

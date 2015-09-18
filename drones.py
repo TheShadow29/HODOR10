@@ -1,5 +1,6 @@
 import pygame, sys, time
 from pygame.locals import *
+import random
 
 pygame.init()
 FPS = 30 # frames per second setting
@@ -78,6 +79,14 @@ gfs_attack[1] = gfs[1][6:12]
 gfImgspritetrans = [pygame.image.load('./Images/Ghostfreak/02GhostfreakNormalrighttrans.png'), 
 					pygame.transform.flip(pygame.image.load('./Images/Ghostfreak/02GhostfreakNormalrighttrans.png'), True, False)] 
 
+drf = ['./Images/Drones/'+i for i in drlist] 
+
+drs = [pygame.image.load(i) for i in drf]
+dr_right = drs[:2]
+dr_left = drs[2:]
+drx = [i for i in xrange(0,5)]
+dry = 0
+dr_go=True
 
 
 
@@ -162,7 +171,7 @@ while True:
 						pygame.display.update()
 					
 				elif curr_alien=='h' and direction=='left':
-					for hbs_count_attack_left in xrange(0,6):
+					for hbs_count_attack_left in xrange(0,5):
 						pygame_img = hbs_attack_left[hbs_count_attack_left]
 						background()
 						DISPLAYSURF.blit(pygame_img,(330,500))
@@ -247,6 +256,22 @@ while True:
 
 	bgx += bgx_change
 
+
+#DRONES#####
+############
+	for i in range(0,5):
+		if dr_go == True:
+			for j in range(0,1):
+				DISPLAYSURF.blit(dr_right[0],(1200-drx[i],500+dry))
+				DISPLAYSURF.blit(dr_right[1],(1200-drx[i]-100,500+dry))			
+				drx[i]+=i
+				dry += (2*random.random()-1)
+				if drx[i]>1100:
+					drx[i] = 0
+				print dr_right[1].get_rect().right
+
+	if dry>100 or dry<-100:
+		dry=0
 	DISPLAYSURF.blit(pygame_img,(330,500))
 	pygame.display.update()
 	fpsClock.tick(FPS)
