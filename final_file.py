@@ -15,7 +15,6 @@ DISPLAYSURF = pygame.display.set_mode((1200,700))
 pygame.display.set_caption('Animation')
 bgImg = pygame.image.load('background-2.jpg')
 
-
 global mousex, mousey
 
 def mouseinbox(box):
@@ -46,15 +45,16 @@ textQuit = pygame.transform.scale(textQuit, (252,54))
 textQuitObj = textQuit.get_rect()
 textQuitObj.topleft = (200, 350)
 
-textLose = fontObj.render('Game Over! Your Score is: '+ str(score), True, (0,0,0))
-textLose = pygame.transform.scale(textLose, (252,54))
-textLoseObj = textLose.get_rect()
-textLoseObj.topleft = (500, 50)
 
 textScore = fontObj.render('Score:', True, GREEN)
 textScore = pygame.transform.scale(textScore, (50,20))
 textScoreObj = textScore.get_rect()
 textScoreObj.topright = (790, 10)
+
+textWin = fontObj.render('You Win', True, (0,0,0))
+textWin = pygame.transform.scale(textWin, (252,54))
+textWinObj = textWin.get_rect()
+textWinObj.topleft = (500, 50)
 
 start = False;
 
@@ -68,6 +68,8 @@ healthTot = 100
 #healthRemaining = 100 - healthTot
 
 execfile('filelist.py')
+
+
 
 def background():
 	DISPLAYSURF.fill((0,0,0))
@@ -186,6 +188,8 @@ gftrans = 0
 start = False
 lose = False
 win = False
+soundObj = pygame.mixer.Sound('ben10.wav')
+soundObj.play()
 
 while True:
 
@@ -195,6 +199,7 @@ while True:
 		DISPLAYSURF.blit(textNewGame, textNewGameObj)
 		for event in pygame.event.get():
 			if event.type == QUIT:
+				soundObj.stop()
 				pygame.quit()
 				sys.exit()
 			elif event.type == MOUSEMOTION:
@@ -276,13 +281,6 @@ while True:
 							background()
 							DISPLAYSURF.blit(pygame_img,(330,500))
 							pygame.display.update()
-						
-					elif curr_alien=='h' and direction=='left':
-						for hbs_count_attack_left in xrange(0,5 ):
-							pygame_img = hbs_attack_left[hbs_count_attack_left]
-							background()
-							DISPLAYSURF.blit(pygame_img,(330,500))
-							pygame.display.update()
 
 					if curr_alien=='d' and direction=='right':
 						index3+=1
@@ -293,6 +291,21 @@ while True:
 							sleep(0.01)
 							pygame.display.update()
 	        			#sleep(.1)
+	        		if curr_alien=='w' and direction=='right':
+						for i in xrange(0,3):
+							for wms_count_roll_right in xrange(0,2):
+								pygame_img = wms_right_roll[wms_count_roll_right]
+								bgx-=5
+								bgx-=5
+								background()	
+								DISPLAYSURF.blit(pygame_img,(330,500))
+								pygame.display.update()
+							pygame_img = wms_right_roll[i]
+							bgx-=5
+							bgx-=5
+							background()	
+							DISPLAYSURF.blit(pygame_img,(330,500))
+							pygame.display.update()
 
 
 
@@ -327,24 +340,6 @@ while True:
 				pygame_img = diamondhead[3 + int(move_count)%4]
 				move_count+=0.5
 				
-
-		elif keys[pygame.K_SPACE]:
-			if curr_alien=='w' and direction=='right':
-				for wms_count_roll_right in xrange(0,2):
-					pygame_img = wms_right_roll[wms_count_roll_right]
-					bgx-=5
-					bgx-=5
-					background()	
-					DISPLAYSURF.blit(pygame_img,(330,500))
-					pygame.display.update()
-			elif curr_alien=='w' and direction=='left':
-				for wms_count_roll_left in xrange(0,3):
-					pygame_img = wms_left_roll[wms_count_roll_left]
-					bgx+=5
-					bgx+=5
-					background()	
-					DISPLAYSURF.blit(pygame_img,(330,500))
-					pygame.display.update()
 	##########
 	#ghostfreak sprites
 		if curr_alien == 'g':
@@ -437,13 +432,11 @@ while True:
 								drx[i]=0
 								dry=0
 							else:
-								#print  'bad'	
 								healthTot-=0.5	
 
 					if drx[i]>=690 and abs(dry)>=0.5:
 						if curr_alien=='g':
 							if gftrans==0:
-								print 'bad'
 								healthTot-=0.5
 						if curr_alien=='b':
 							healthTot-=0.5
@@ -452,17 +445,11 @@ while True:
 						if curr_alien=='d':
 							#if pygame_img != hbs[3]:
 							if pygame_img == dmra[0] or pygame_img == dmra[1] or pygame_img==dmra[2]:
-								#if 
-								#print 'good'
 								score+=5
 								drx[i]=0
 								dry=0
 							else:
-								#print 'bad'
 								healthTot-=0.5
-
-
-
 
 					if keys[pygame.K_RIGHT]:
 						drx[i]+=i+5
@@ -485,11 +472,19 @@ while True:
 
 
 		DISPLAYSURF.blit(pygame_img,(330,500))
-		if healthTot < 0 or (timeMax-(time/1000))<0:
+		if healthTot < 0 or time > timeMax*1000:
 			lose = True
 			break
+
 		pygame.display.update()
 		fpsClock.tick(FPS)
+
+
+
+	textLose = fontObj.render('Game Over! Your Score is: '+ str(score), True, (0,0,0))
+	textLose = pygame.transform.scale(textLose, (252,54))
+	textLoseObj = textLose.get_rect()
+	textLoseObj.topleft = (500, 50)
 
 	while lose == True:
 		DISPLAYSURF.fill(brown)
@@ -497,16 +492,53 @@ while True:
 		DISPLAYSURF.blit(textPlayAgain, textPlayAgainObj)
 		DISPLAYSURF.blit(textLose, textLoseObj)
 		DISPLAYSURF.blit(textQuit, textQuitObj)
+		pygame.display.update()
 		for event in pygame.event.get():
 			if event.type == QUIT:
+				soundObj.stop()
 				pygame.quit()
 				sys.exit()
 			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
 				mousex, mousey = pygame.mouse.get_pos()
-				print mousex, mousey
 				if mousex > 200 and mousex < 452 and mousey >200  and mousey < 300:
 					direction='right'
+					hbs_count_attack_right = 0
+					hb_count_move_left = 0
+					hbs_count_attack_left=0
+					move_count = 0
+					wm_count_move_left =0
+					wm_count_roll=0
+					wm_count_roll_left=0
+					alienchange = 'b'
+					gftrans = 0
+					start = False
+					lose = False
+					win = False
+					healthTot = 100
+					drx = [i for i in xrange(1,5)]
+					bgx = 0
+					bgy = 700 - size[1]
+				elif mousex > 200 and mousex < 452 and mousey >350  and mousey < 404:
+					soundObj.stop()
+					pygame.quit()
+					sys.exit()
 
+	while win == True:
+		DISPLAYSURF.fill(brown)
+		DISPLAYSURF.blit(ben_cover,(0,0))
+		DISPLAYSURF.blit(textPlayAgain, textPlayAgainObj)
+		DISPLAYSURF.blit(textWin, textWinObj)
+		DISPLAYSURF.blit(textQuit, textQuitObj)
+		pygame.display.update()
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				soundObj.stop()
+				pygame.quit()
+				sys.exit()
+			elif event.type == MOUSEBUTTONDOWN and event.button == 1:
+				mousex, mousey = pygame.mouse.get_pos()
+				if mousex > 200 and mousex < 452 and mousey >200  and mousey < 300:
+					
 					hbs_count_attack_right = 0
 					hb_count_move_left = 0
 					hbs_count_attack_left=0
@@ -517,16 +549,17 @@ while True:
 					wm_count_roll=0
 					wm_count_roll_left=0
 
-					curr_alien = 'b'
-
+					alienchange = 'b'
 					gftrans = 0
-
 					start = False
 					lose = False
 					win = False
 					healthTot = 100
 					drx = [i for i in xrange(1,5)]
+					bgx = 0
+					bgy = 700 - size[1]
 				elif mousex > 200 and mousex < 452 and mousey >350  and mousey < 404:
+					soundObj.stop()
 					pygame.quit()
 					sys.exit()
 

@@ -167,6 +167,69 @@ index3=0	#for diamondhead
 
 transform={'h':0, 'w':0, 'g':0, 'b':0, 'd':0}
 
+def bossbackground():
+	DISPLAYSURF.blit((0,0,255))
+	time = pygame.time.get_ticks()
+	fontObj = pygame.font.Font('freesansbold.ttf', 20)
+	timeSurfaceObj = fontObj.render(str(time/1000), True, GREEN)
+	timeRectObj = timeSurfaceObj.get_rect()
+	timeRectObj.center = (400, 20)
+	health = pygame.Rect(21, 12, healthTot*200/100, 16)
+	pygame.draw.rect(DISPLAYSURF, GREEN, (20, 10, 204, 20), 1)
+	pygame.draw.rect(DISPLAYSURF, GREEN, health)
+	DISPLAYSURF.blit(timeSurfaceObj, timeRectObj)
+	pygame.display.update()
+
+BLUE=(0,0,255)
+
+boss = [pygame.image.load('Images/Boss/18.png'),
+		pygame.image.load('Images/Boss/0.png'),
+		pygame.image.load('Images/Boss/1.png'),
+		pygame.image.load('Images/Boss/2.png'),
+		pygame.image.load('Images/Boss/3.png'),
+		pygame.image.load('Images/Boss/4.png'),
+		pygame.image.load('Images/Boss/5.png'),
+		pygame.image.load('Images/Boss/6.png'),
+		pygame.image.load('Images/Boss/7.png'),
+		pygame.image.load('Images/Boss/8.png'),
+		pygame.image.load('Images/Boss/9.png'),
+		pygame.image.load('Images/Boss/24.png'),
+		pygame.image.load('Images/Boss/25.png'),
+		pygame.image.load('Images/Boss/26.png'),
+		pygame.image.load('Images/Boss/27.png'),
+		pygame.image.load('Images/Boss/19.png'),
+		pygame.image.load('Images/Boss/20.png'),
+		pygame.image.load('Images/Boss/21.png'),
+		pygame.image.load('Images/Boss/22.png'),
+		pygame.image.load('Images/Boss/23.png')
+		]
+
+
+boss_img = []
+for i in range(0,15):
+	boss_img.append(pygame.transform.scale(boss[i],(500,500)))
+for i in range(16,20):
+	boss_img.append(pygame.transform.scale(pygame.transform.flip(boss[i],True,False),(500,500)))
+
+
+def whip_left():
+	for i in range(1,11):
+		DISPLAYSURF.fill(BLUE)
+		DISPLAYSURF.blit(boss_img[i],(500,150))
+		fpsClock.tick(FPS)
+    		
+def wrecking_ball():
+	for i in range(11,15):
+		DISPLAYSURF.fill(BLUE)
+		DISPLAYSURF.blit(boss_img[i],(500,150))
+		fpsClock.tick(FPS)
+def dragon():
+	for i in range(15,19):
+		DISPLAYSURF.fill(BLUE)
+		DISPLAYSURF.blit(boss_img[i],(500,150))
+		fpsClock.tick(FPS)
+
+
 direction='right'
 
 hbs_count_attack_right = 0
@@ -182,7 +245,7 @@ wm_count_roll_left=0
 curr_alien = 'b'
 
 gftrans = 0
-
+bosslevel = True
 start = False
 lose = False
 win = False
@@ -203,11 +266,14 @@ while True:
 				mousex, mousey = pygame.mouse.get_pos()
 				if mousex > 200 and mousex < 452 and mousey > 350 and mousey < 404:
 					start = True;
+					#print"NewGame"
 		pygame.display.update()
+
 	
-	while start == True and lose == False and win == False:
+	while start == True and lose == False and win == False and bosslevel==False:
 		background()
 		pygame.event.pump()
+		#print "Second loop"
 		for event in pygame.event.get():
 			if event.type == QUIT:
 				pygame.quit()
@@ -506,7 +572,6 @@ while True:
 				print mousex, mousey
 				if mousex > 200 and mousex < 452 and mousey >200  and mousey < 300:
 					direction='right'
-
 					hbs_count_attack_right = 0
 					hb_count_move_left = 0
 					hbs_count_attack_left=0
@@ -516,7 +581,7 @@ while True:
 					wm_count_move_left =0
 					wm_count_roll=0
 					wm_count_roll_left=0
-
+	
 					curr_alien = 'b'
 
 					gftrans = 0
@@ -531,3 +596,210 @@ while True:
 					sys.exit()
 
 		pygame.display.update()
+#################################################################################
+	while start == True and bosslevel == True:
+		attack=int(random.random()*3)
+		if attack==0:
+			wrecking_ball()
+			sleep(1)
+		elif attack==1:
+			whip_left()
+			sleep(1)
+		elif attack==2:
+			dragon()
+			sleep(1)
+
+		pygame.event.pump()
+		for event in pygame.event.get():
+			if event.type == QUIT:
+				pygame.quit()
+				sys.exit()
+			if event.type == pygame.KEYUP:
+				if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+					bgx_change = 0
+				if curr_alien == 'h':
+					if direction =='right':
+						pygame_img=hbs[3] 
+					elif direction == 'left':
+						pygame_img = pygame.transform.flip(hbs[3],True,False)
+				elif curr_alien == 'b':
+					if direction =='right':
+						pygame_img=ben[1] 
+					elif direction == 'left':
+						pygame_img = ben_left[1]
+				elif curr_alien=='w':
+					if direction =='right':
+						pygame_img=wms[2] 
+					elif direction == 'left':
+						pygame_img = pygame.transform.flip(wms[2],True,False)
+				elif curr_alien=='d':
+					if direction =='right':
+						pygame_img = pygame.transform.flip(diamondhead[2],True,False) 
+					elif direction == 'left':
+						pygame_img = diamondhead[2]
+				
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_RIGHT:
+					bgx_change = 5
+					direction='right'				
+				elif event.key == pygame.K_LEFT:
+					if bgx >= 0:
+						pass
+					else: 
+						bgx_change = -5
+					direction='left'
+	#Alienchanges			
+				elif event.key == pygame.K_h:
+					alienchange = 'h'
+				elif event.key == pygame.K_w:
+					alienchange = 'w'
+				elif event.key == pygame.K_b:
+					alienchange = 'b'
+				elif event.key == pygame.K_g:
+					alienchange = 'g'
+				elif event.key == pygame.K_x and curr_alien == 'g':
+					gftrans = 1 - gftrans
+				elif event.key == pygame.K_d:
+					alienchange = 'd'
+					
+	###############
+	#Attack
+				elif event.key == pygame.K_SPACE:
+					if curr_alien=='h' and direction=='right':
+						for hbs_count_attack_right in xrange(0,5):
+							pygame_img = hbs_attack_right[int(hbs_count_attack_right)]
+							background()
+							DISPLAYSURF.blit(pygame_img,(330,500))
+							pygame.display.update()
+						
+					elif curr_alien=='h' and direction=='left':
+						for hbs_count_attack_left in xrange(0,5):
+							pygame_img = hbs_attack_left[hbs_count_attack_left]
+							background()
+							DISPLAYSURF.blit(pygame_img,(330,500))
+							pygame.display.update()
+
+
+
+	######################
+	#movement + Wildmutt attack
+		keys = pygame.key.get_pressed()
+		if keys[pygame.K_RIGHT]:
+			if curr_alien == 'h':
+				pygame_img=hbs_right_motion[int(move_count)%6] 
+				move_count+=0.5
+			elif curr_alien == 'b':
+				pygame_img = ben_move[int(move_count)%4]
+				move_count+=0.5
+			elif curr_alien=='w':
+				pygame_img=wms_right_motion[int(move_count)%4]				
+				move_count+=0.5
+			elif curr_alien == 'd':
+				pygame_img = pygame.transform.flip(diamondhead[3 + int(move_count)%4],True,False)
+				move_count+=0.5
+			
+		elif keys[pygame.K_LEFT]:
+			if curr_alien=='h':
+				pygame_img=hbs_left_motion[int(move_count)%6]
+				move_count+=0.5
+			elif curr_alien == 'b':
+				pygame_img = ben_left_move[int(move_count)%4]
+				move_count+=0.5
+			elif curr_alien=='w':
+				pygame_img=wms_left_motion[int(move_count)%4]				
+				move_count+=0.5
+			elif curr_alien == 'd':
+				pygame_img = diamondhead[3 + int(move_count)%4]
+				move_count+=0.5
+				
+
+		elif keys[pygame.K_SPACE]:
+			if curr_alien=='w' and direction=='right':
+				for wms_count_roll_right in xrange(0,3):
+					pygame_img = wms_right_roll[wms_count_roll_right]
+					bgx-=5
+					bgx-=5
+					background()	
+					DISPLAYSURF.blit(pygame_img,(330,500))
+					pygame.display.update()
+			elif curr_alien=='w' and direction=='left':
+				for wms_count_roll_left in xrange(0,3):
+					pygame_img = wms_left_roll[wms_count_roll_left]
+					bgx+=5
+					bgx+=5
+					background()	
+					DISPLAYSURF.blit(pygame_img,(330,500))
+					pygame.display.update()
+	##########
+	#ghostfreak sprites
+		if curr_alien == 'g':
+			if direction == 'right':
+				if gftrans == 0:
+					pygame_img = gfs[0][1]
+				elif gftrans == 1:
+					pygame_img = gfImgspritetrans[0]
+			elif direction == 'left':
+				if gftrans == 0:
+					pygame_img = gfs[1][1]
+				elif gftrans == 1:
+					pygame_img = gfImgspritetrans[1]
+
+	###########
+
+	#Alienchange sprites		
+		if alienchange == 'h':
+			curr_alien = 'h'
+			pygame_img = hbs[transform[alienchange]]
+			transform[alienchange]+=1
+			if transform[alienchange]>3:
+				transform[alienchange]=0
+				alienchange=''
+
+		if alienchange == 'w':
+			curr_alien = 'w'
+			pygame_img = wms[transform[alienchange]]
+			transform[alienchange]+=1
+			if transform[alienchange]>2:
+				transform[alienchange]=0
+				alienchange=''
+
+		if alienchange == 'g':
+			curr_alien = 'g'
+			pygame_img = gfs[0][transform[alienchange]]
+			transform[alienchange]+=1
+			if transform[alienchange]>1:
+				transform[alienchange]=0
+				alienchange=''
+
+		if alienchange == 'b':
+			curr_alien = 'b'
+			pygame_img = ben[transform[alienchange]]
+			transform[alienchange]+=1
+			if transform[alienchange] > 1:
+				transform[alienchange]=0
+				alienchange=''
+
+		if alienchange == 'd':
+			curr_alien = 'd'
+			pygame_img = pygame.transform.flip(diamondhead[transform[alienchange]],True,False)
+			transform[alienchange]+=1
+			if transform[alienchange] > 2:
+				transform[alienchange]=0
+				alienchange=''
+	#########
+
+		bgx += bgx_change
+
+		DISPLAYSURF.blit(pygame_img,(bgx,bgy))
+
+		pygame.display.update()
+
+
+
+
+
+	pygame.display.update()
+	for event in pygame.event.get():
+		if event.type == QUIT:
+			pygame.quit()
+			sys.exit()

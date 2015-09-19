@@ -202,7 +202,7 @@ curr_alien = 'b'
 
 gftrans = 0
 
-bosslevel = False
+bosslevel = True
 win = False
 start = False
 lose = False
